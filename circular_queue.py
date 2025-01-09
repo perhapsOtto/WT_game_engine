@@ -12,9 +12,9 @@ class CircularQueue():
     
     def push(self, item):
         """Add an item to the queue, throws an error if there's not enough space in the queue"""
-        if (self.__queue + 1) % self.__max_size != self.__head:
+        if (self.__tail + 1) % self.__max_size != self.__head:
             self.__queue[self.__tail] = item
-            self.__queue = (self.__queue + 1) % self.__max_size
+            self.__tail = (self.__tail + 1) % self.__max_size
         else:
             raise MemoryError("not enough space in queue of size: " + self.__max_size + " to add item: " + item)
     
@@ -30,6 +30,15 @@ class CircularQueue():
     
     def size(self):
         """Returns the size of queue"""
+        if self.__head == self.__tail:
+            return 0
         return self.__max_size - (self.__head - self.__tail) % self.__max_size
 
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        if self.__head == self.__tail:
+            raise StopIteration
+        return self.pop()
 

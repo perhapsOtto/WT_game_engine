@@ -1,6 +1,5 @@
 from circular_queue import CircularQueue
 from message import Msg
-from system import System
 from terminal import Terminal
 
 
@@ -20,17 +19,36 @@ class MessageBus():
         msg = Msg(name, info)
         MessageBus.__queue.push(msg)
     
-    def register(self, system:System):
+    def post_imm(self, msg:Msg):
+        self.send_message(msg)
+    
+    def post_imm(self, name:str, info:dict):
+        msg = Msg(name, info)
+        self.send_message(msg)
+    
+    def register(self, system):
         self.__listeners.append(system)
     
-    def unregister(self, system:System): #might not be needed
+    def unregister(self, system):
         self.__listeners.remove(system)
     
     def send_message(self, msg:Msg):
-        MessageBus.__terminal.write(Msg.__mappings[msg.id])
+        MessageBus.__terminal.write(msg.name)
         for l in MessageBus.__listeners:
             l.handle_message(msg)
+    
+    def send_all(self): #for testing (maybe)
+        for msg in MessageBus.__queue:
+            self.send_message(msg)
 
 
 
+def main():
+    mb = MessageBus()
+    mb.post("PLAY_SOUND", {"id": 100})
+    mb.send_all()
+
+
+if __name__ == "__main__":
+    main()
     
