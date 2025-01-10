@@ -7,6 +7,9 @@ class Object():
         self.x = x
         self.y = y
         self.rot = rot
+        self.collision = None
+        self.physics = None
+        self.texture = None
 
     def update(self):
         pass
