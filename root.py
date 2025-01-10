@@ -1,6 +1,7 @@
 from draw_comp import DrawComp
 from input_comp import InputComp
 from physics_comp import PhysicsComp
+from scene_comp import SceneComp
 from sound_comp import SoundComp
 
 class Root():

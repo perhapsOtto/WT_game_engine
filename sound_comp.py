@@ -2,7 +2,7 @@
 
 class SoundComp():
 
-    def __init__(self):
+    def __init__(self, resource):
         #TODO: this whole class...
         pass 
 
@@ -17,7 +17,7 @@ class SoundComp():
         pass
 
     def stop_sound(self, sound):
-        """sends signal to stop sound"""
+        """stops sound"""
         #TODO: how the heck is this gonna happen (sound IDs?)
         pass
 

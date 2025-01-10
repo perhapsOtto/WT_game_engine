@@ -4,7 +4,7 @@ from color import Color
 class DrawComp():
     """handles drawing for root"""
 
-    def __init__(self):
+    def __init__(self, resources):
         #TODO: make the whole thing...
         pass
 

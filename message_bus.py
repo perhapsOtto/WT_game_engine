@@ -20,11 +20,11 @@ class MessageBus():
         MessageBus.__queue.push(msg)
     
     def post_imm(self, msg:Msg):
-        self.send_message(msg)
+        self.__send_message(msg)
     
     def post_imm(self, name:str, info:dict):
         msg = Msg(name, info)
-        self.send_message(msg)
+        self.__send_message(msg)
     
     def register(self, system):
         self.__listeners.append(system)
@@ -32,14 +32,14 @@ class MessageBus():
     def unregister(self, system):
         self.__listeners.remove(system)
     
-    def send_message(self, msg:Msg):
+    def __send_message(self, msg:Msg):
         MessageBus.__terminal.write(msg.name)
         for l in MessageBus.__listeners:
             l.handle_message(msg)
     
     def send_all(self): #for testing (maybe)
         for msg in MessageBus.__queue:
-            self.send_message(msg)
+            self.__send_message(msg)
 
 
 
