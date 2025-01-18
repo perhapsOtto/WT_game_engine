@@ -1,6 +1,6 @@
 
 
-class SoundComp():
+class Audio():
 
     def __init__(self, resource):
         #TODO: this whole class...

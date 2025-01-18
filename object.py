@@ -1,5 +1,8 @@
 
 
+from input import Input
+
+
 class Object():
     """the base class all game objects inherit"""
 
@@ -12,4 +15,9 @@ class Object():
         self.texture = None
 
     def update(self):
-        pass
+        if Input.event is not None:
+            print("update input check", Input.event)
+        
+
+    def input(self, event):
+        print("input on", self, event)

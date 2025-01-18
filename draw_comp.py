@@ -13,13 +13,13 @@ class DrawComp():
         #TODO: figure out OpenGL D:
         pass
 
-    def draw_square(self, posx, posy, hight, width, color:Color):
-        """draws a square of color at position (posx, posy), with hight and width"""
+    def draw_square(self, posx, posy, height, width, color:Color):
+        """draws a square of color at position (posx, posy), with height and width"""
         #TODO: more OpenGL
         pass
 
-    def draw_elipse(self, posx, posy, hight, width, color:Color):
-        """draws a elipse of color at position (posx, posy), with hight and width"""
+    def draw_elipse(self, posx, posy, height, width, color:Color):
+        """draws a elipse of color at position (posx, posy), with height and width"""
         #TODO: more more OpenGL
         pass
 
