@@ -7,7 +7,7 @@ class Resources():
     #could be seperate dicts.. maybe...
 
     def __init__(self, dir):
-        self.path = dir
+        Resources.path = dir
         pass
 
     def load(self, file):

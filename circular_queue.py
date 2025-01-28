@@ -33,6 +33,10 @@ class CircularQueue():
         if self.__head == self.__tail:
             return 0
         return self.__max_size - (self.__head - self.__tail) % self.__max_size
+    
+    def clear(self):
+        self.__head = 0
+        self.__tail = 0
 
     def __iter__(self):
         return self
