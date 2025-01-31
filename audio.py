@@ -1,10 +1,10 @@
-
+import simpleaudio
+from audioplayer import AudioPlayer
 
 class Audio():
 
     def __init__(self, resource):
-        #TODO: this whole class...
-        pass 
+        pass#sound = AudioSegment.from_wav("sounds/project_3.wav")
 
     def play_sound(self, sound, volume):
         """adds sound to the audio queue"""
@@ -13,8 +13,9 @@ class Audio():
 
     def play_sound_imm(self, sound, volume):
         """sends sound to the audio player immediately (don't overuse)"""
-        #TODO: might not be needed
-        pass
+        #sound_object = simpleaudio.WaveObject.from_wave_file(sound)
+        #play_object = sound_object.play()
+        test=AudioPlayer(sound).play(block=False)
 
     def stop_sound(self, sound):
         """stops sound"""
