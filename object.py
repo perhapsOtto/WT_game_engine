@@ -16,17 +16,19 @@ class Object():
         self.texture = None
         self.asleep = False
         self.static = True
-        #self.grounded = False
+        self.texture = None
+        self.listeners = {}
 
     def update(self, delta):
-        if Input.event is not None:
-            print("update input check", Input.event)
+        '''called every frame by scene'''
+        pass
         
 
     def input(self, event):
         print("input on", self, event)
 
     def check_sleep(self):
+        '''check if self should be chacked by the physics system'''
         if (abs(self.velocity[0]) < 0.1 and abs(self.velocity[1]) < 0.1 and 
             abs(self.old_velocity[0]) < 0.1 and abs(self.old_velocity[1]) < 0.1):
             self.asleep = True
@@ -34,11 +36,13 @@ class Object():
             self.sleep = False
 
     def move(self, delta):
+        '''move by velocity'''
         self.x += self.velocity[0] * delta
         self.y += self.velocity[1] * delta
         self.old_velocity = self.velocity
     
     def gravity(self, delta):
+        '''apply gravity'''
         if not self.static and self.collision is not None:
             if not self.collision.grounded:
                 self.velocity[1] -= self.collision.gravity*delta
@@ -48,4 +52,17 @@ class Object():
                 self.velocity[1] = 0
     
     def queue_free(self):
+        '''queue self to be deleted'''
         Locator.queue_free(self)
+
+    def connect(self, obj, func_name):
+        '''connect obj.func_name to be called when emit() is run'''
+        self.listeners[obj] = func_name
+    
+    def emit(self):
+        '''calls the functions on all self's listeners'''
+        for obj in self.listeners.keys():
+            func = getattr(obj, self.listeners[obj])
+            func()
+    
+

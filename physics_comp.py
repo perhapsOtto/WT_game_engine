@@ -2,38 +2,48 @@
 
 import math
 
+from button import Button
 
 class PhysicsComp():
+    '''handles collisions and physics for objects in the scene'''
 
-    def __init__(self):
-        #TODO: this one's gonna be fun...
-        pass
+    def __init__(self, input_comp):
+        self.input = input_comp
 
-    def move(self, objects, delta):
+    def move(self, objects, delta, ui=[]):
+        '''move all objects by their velocity and gravity, check collisions after'''
         for obj in objects:
             
             obj.move(delta)
             obj.gravity(delta)
             if obj.collision is not None:
                 obj.collision.grounded = False
-        self.process(objects, delta)
+        self.process(objects, delta, ui)
 
-    def process(self, objects, delta, again = 3):
+    def process(self, objects, delta, ui=[], again = 3):
+        '''decides which objects should be checked for collision'''
         unchecked = objects.copy()
         for obj in objects:
-             #reset grounded (check and set later)
-            #obj.check_sleep()
-            #obj.move(delta)
-            #obj.gravity(delta)
             if not obj.asleep and obj.collision is not None:
                 unchecked.remove(obj)
                 for obj2 in unchecked:
                     if obj is not obj2 and obj2.collision is not None:
                         self.collide(obj, obj2)
-            #print(obj, obj.collision.grounded)
-        #print("-_-_-_-_-")
+        
         if again > 0:
-            self.process(objects, 0.0, again-1)
+            self.process(objects, 0.0, ui, again-1)
+        else:
+            pos = self.input.get_mouse_pos()
+            for obj in ui:
+                if type(obj) is Button:
+                    if self.overlap(pos, obj):
+                        if "LEFT_CLICK" in self.input.input_queue["just_pressed"] or "LEFT_CLICK" in self.input.input_queue["held"] or "LEFT_CLICK" in self.input.input_queue["just_released"]:
+                            obj.click("LEFT_CLICK" in self.input.input_queue["just_released"])
+                        else:
+                            obj.hover()
+                    else:
+                        obj.nothing()
+                    
 
     def resolve_r_r_col(self,obj1, obj2):
         #obj1_center = obj1.collision.center()
@@ -67,6 +77,7 @@ class PhysicsComp():
 
     
     def collide(self, obj1, obj2, resolve=True):
+        '''checks if obj1 and obj2 collide, if resolve is True, moves them accordingly'''
         match [obj1.collision.shape, obj2.collision.shape]:
             case ["RECT", "RECT"]:
                 #check if in range vertically
@@ -74,26 +85,41 @@ class PhysicsComp():
                 #print("r-r")
                 if (obj1.x+obj1.collision.width) > obj2.x and obj1.x < (obj2.x+obj2.collision.width):
                     if obj1.y-0.1<obj2.y+obj2.collision.height and obj1.y > obj2.y:
-                        obj1.collision.grounded = True
+                        if not obj2.collision.trigger:
+                            obj1.collision.grounded = True
                     if obj2.y-0.1<obj1.y+obj1.collision.height and obj2.y > obj1.y:
-                        obj2.collision.grounded = True
+                        if not obj1.collision.trigger:
+                            obj2.collision.grounded = True
                     if (obj1.y+obj1.collision.height) > obj2.y and obj1.y < (obj2.y+obj2.collision.height):
-                        if resolve:
+                        if obj1.collision.trigger:
+                            obj1.emit(obj2)
+                        if obj2.collision.trigger:
+                            obj2.emit(obj1)
+                        elif resolve and not obj1.collision.trigger:
                             self.resolve_r_r_col(obj1, obj2)
                         return True
                 return False
                             
 
                 
-            case ["RECT", "CIRC"]:
+            case ["RECT", "CIRC"]:#currently only rectangles
                 print("r-c")
             case ["CIRC", "RECT"]:
                 print("c-r")
             case ["CIRC", "CIRC"]:
                 print("c-c")
+    
+    def overlap(self, mouse_pos, button):
+        '''checks if the mouse is over a given ui element'''
+        if mouse_pos[0] > button.x and mouse_pos[0] < button.x + button.width and mouse_pos[1] > button.y and mouse_pos[1] < button.y + button.height:
+            return True
+        return False
+
 
     def dist(self, x1, y1, x2, y2):
+        '''returns the distance from points (x1, y1) to (x2, y2)'''
         return math.sqrt((x1-x2)**2 + (y1-y2)**2)
     
     def slope(self, x1, y1, x2, y2):
+        '''returns the slope of the line between points (x1, y1) and (x2, y2)'''
         return [x2 - x1, y2 - y1]

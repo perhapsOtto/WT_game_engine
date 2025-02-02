@@ -1,6 +1,7 @@
 
 
 class Resources():
+    '''holds all the needed files, like textures and sounds, currently unimplemented'''
 
     resources = {}
     path = "test"
@@ -11,7 +12,7 @@ class Resources():
         pass
 
     def load(self, file):
-        #TODO: learn the file system
+        #TODO: everything...
         pass
 
     def access(self, file):
