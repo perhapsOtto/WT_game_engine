@@ -1,7 +1,8 @@
-from color import Color
+from old.color import Color
 
 
 class TextureObj():
+    '''for use on a Object to give it a texture'''
 
     def __init__(self, texture, layer=0, frames_x=1, frames_y=1, looping=False):
         self.sprite = None
@@ -16,7 +17,7 @@ class TextureObj():
 
     def set_frame(self, frame):
         if frame in range(self.fx * self.xy):
-            self.sprite = self.texture #TODO: figure out how this has gotta happen...
+            self.sprite = self.texture
 
     def animate_next(self):
         self.frame += 1

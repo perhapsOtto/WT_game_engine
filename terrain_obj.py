@@ -4,6 +4,7 @@ from texture_obj import TextureObj
 
 
 class Terrain(Object):
+    '''a base class for an object unaffected by movement'''
 
     def __init__(self, x, y, texture, collision_hight, collision_width, collision_shape, collision_mask=[0], rot=0):
         super().__init__(x, y, rot)
